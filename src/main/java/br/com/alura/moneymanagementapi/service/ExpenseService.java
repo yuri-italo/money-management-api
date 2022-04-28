@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ExpenseService {
@@ -43,5 +44,14 @@ public class ExpenseService {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
         return ResponseEntity.status(HttpStatus.OK).body(ExpenseDto.convertManyToDto(expenseList));
+    }
+
+    public ResponseEntity<?> getById(Long id) {
+        Optional<Expense> optional = expenseRepository.findById(id);
+
+        if (optional.isPresent())
+            return ResponseEntity.status(HttpStatus.OK).body(new ExpenseDto(optional.get()));
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Expense does not exist.");
     }
 }

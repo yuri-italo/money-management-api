@@ -28,4 +28,8 @@ public class ExpenseController {
     public ResponseEntity<?> listAll() {
       return expenseService.listAll();
     }
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getById(@PathVariable Long id) {
+        return expenseService.getById(id);
+    }
 }
