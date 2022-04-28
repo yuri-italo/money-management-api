@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.List;
+
 @Service
 public class IncomeService {
 
@@ -32,5 +34,14 @@ public class IncomeService {
 
     private boolean incomeAlreadyExists(IncomeForm incomeForm) {
         return incomeRespository.findByDescriptionAndDate(incomeForm.getDescription(), incomeForm.getDate().getYear(), incomeForm.getDate().getMonthValue());
+    }
+
+    public ResponseEntity<?> listAll() {
+        List<Income> incomeList = incomeRespository.findAll();
+
+        if (incomeList.isEmpty())
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+
+        return ResponseEntity.status(HttpStatus.OK).body(IncomeDto.convertManyToDto(incomeList));
     }
 }
