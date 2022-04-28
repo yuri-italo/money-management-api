@@ -16,7 +16,6 @@ public class ExpenseForm {
     @NotNull
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd-MM-yyyy")
     private LocalDate date;
-    @NotNull
     private Category category;
 
     public String getDescription() {

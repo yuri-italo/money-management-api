@@ -4,7 +4,6 @@ import br.com.alura.moneymanagementapi.dto.ExpenseDto;
 import br.com.alura.moneymanagementapi.form.ExpenseForm;
 import br.com.alura.moneymanagementapi.model.Expense;
 import br.com.alura.moneymanagementapi.repository.ExpenseRepository;
-import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -26,8 +25,7 @@ public class ExpenseService {
         if (expenseAlreadyExists(expenseForm))
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Monthly expense already exists.");
 
-        Expense expense = new Expense();
-        BeanUtils.copyProperties(expenseForm,expense);
+        Expense expense = new Expense(expenseForm);
         expenseRepository.save(expense);
 
         return ResponseEntity.created(uriBuilder.path("/expenses/{id}").buildAndExpand(expense.getId()).toUri()).body(new ExpenseDto(expense));
@@ -59,7 +57,7 @@ public class ExpenseService {
         Optional<Expense> optional = expenseRepository.findById(id);
 
         if (optional.isPresent()) {
-            if (expenseAlreadyExists(expenseForm) && valueIsEqual(optional.get(),expenseForm))
+            if (expenseAlreadyExists(expenseForm) && isNotModified(optional.get(),expenseForm))
                 return ResponseEntity.status(HttpStatus.CONFLICT).body("Monthly expense already exists.");
 
             return ResponseEntity.status(HttpStatus.OK).body(updateFields(optional.get(),expenseForm));
@@ -68,15 +66,17 @@ public class ExpenseService {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Expense does not exist.");
     }
 
-    private boolean valueIsEqual(Expense expense, ExpenseForm expenseForm) {
-        return expense.getValue().compareTo(expenseForm.getValue()) == 0;
+    private boolean isNotModified(Expense expense, ExpenseForm expenseForm) {
+        return expense.getValue().compareTo(expenseForm.getValue()) == 0 && expenseForm.getCategory() == null;
     }
 
     private ExpenseDto updateFields(Expense expense, ExpenseForm expenseForm) {
         expense.setDescription(expenseForm.getDescription());
         expense.setValue(expenseForm.getValue());
         expense.setDate(expenseForm.getDate());
-        expense.setCategory(expenseForm.getCategory());
+
+        if (expenseForm.getCategory() != null)
+            expense.setCategory(expenseForm.getCategory());
 
         return new ExpenseDto(expense);
     }

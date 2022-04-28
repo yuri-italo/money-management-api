@@ -1,5 +1,7 @@
 package br.com.alura.moneymanagementapi.model;
 
+import br.com.alura.moneymanagementapi.form.ExpenseForm;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -17,7 +19,22 @@ public class Expense {
     @Column(nullable = false)
     private LocalDate date;
     @Column(nullable = false)
+    @Enumerated(value = EnumType.STRING)
     private Category category;
+
+    public Expense() {
+    }
+
+    public Expense(ExpenseForm expenseForm) {
+        this.description = expenseForm.getDescription();
+        this.value = expenseForm.getValue();
+        this.date = expenseForm.getDate();
+
+        if (expenseForm.getCategory() == null)
+            this.category = Category.OTHERS;
+        else
+            this.category = expenseForm.getCategory();
+    }
 
     public Long getId() {
         return id;
