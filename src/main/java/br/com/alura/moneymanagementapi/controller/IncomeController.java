@@ -25,8 +25,8 @@ public class IncomeController {
         return incomeService.save(incomeForm,uriBuilder);
     }
     @GetMapping
-    public ResponseEntity<?> listAll() {
-        return incomeService.listAll();
+    public ResponseEntity<?> listAll(@RequestParam(required = false) String description) {
+        return incomeService.listAll(description);
     }
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable Long id) {
