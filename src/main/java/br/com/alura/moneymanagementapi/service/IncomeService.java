@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class IncomeService {
@@ -43,5 +44,14 @@ public class IncomeService {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
         return ResponseEntity.status(HttpStatus.OK).body(IncomeDto.convertManyToDto(incomeList));
+    }
+
+    public ResponseEntity<?> getById(Long id) {
+        Optional<Income> optional = incomeRespository.findById(id);
+
+        if (optional.isPresent())
+            return ResponseEntity.status(HttpStatus.OK).body(new IncomeDto(optional.get()));
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Income does not exist.");
     }
 }

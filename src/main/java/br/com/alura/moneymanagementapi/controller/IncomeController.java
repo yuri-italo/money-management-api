@@ -28,4 +28,8 @@ public class IncomeController {
     public ResponseEntity<?> listAll() {
         return incomeService.listAll();
     }
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getById(@PathVariable Long id) {
+        return incomeService.getById(id);
+    }
 }
