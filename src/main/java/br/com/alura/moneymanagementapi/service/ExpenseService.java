@@ -35,8 +35,13 @@ public class ExpenseService {
         return expenseRepository.findByDescriptionAndDate(expenseForm.getDescription(),expenseForm.getDate().getYear(),expenseForm.getDate().getMonthValue());
     }
 
-    public ResponseEntity<?> listAll() {
-        List<Expense> expenseList = expenseRepository.findAll();
+    public ResponseEntity<?> listAll(String description) {
+        List<Expense> expenseList;
+
+        if (description == null)
+            expenseList = expenseRepository.findAll();
+        else
+            expenseList = expenseRepository.findByDescriptionContainingIgnoreCase(description);
 
         if (expenseList.isEmpty())
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();

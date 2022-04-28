@@ -25,8 +25,8 @@ public class ExpenseController {
         return expenseService.save(expenseForm,uriBuilder);
     }
     @GetMapping
-    public ResponseEntity<?> listAll() {
-      return expenseService.listAll();
+    public ResponseEntity<?> listAll(@RequestParam(required = false) String description) {
+      return expenseService.listAll(description);
     }
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable Long id) {
