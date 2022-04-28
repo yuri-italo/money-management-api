@@ -74,4 +74,15 @@ public class IncomeService {
 
         return new IncomeDto(income);
     }
+
+    public ResponseEntity<String> deleteById(Long id) {
+        Optional<Income> optional = incomeRespository.findById(id);
+
+        if (optional.isPresent()) {
+            incomeRespository.deleteById(id);
+            return ResponseEntity.status(HttpStatus.OK).body("Income deleted.");
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Income does not exist.");
+    }
 }

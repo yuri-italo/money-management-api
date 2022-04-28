@@ -37,4 +37,9 @@ public class IncomeController {
     public ResponseEntity<?> updateById(@PathVariable Long id, @RequestBody @Valid IncomeForm incomeForm) {
         return incomeService.updateById(id,incomeForm);
     }
+    @DeleteMapping("/{id}")
+    @Transactional
+    public ResponseEntity<String> deleteById(@PathVariable Long id) {
+        return incomeService.deleteById(id);
+    }
 }
