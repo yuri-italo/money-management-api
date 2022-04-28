@@ -10,9 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.math.BigDecimal;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -78,6 +76,7 @@ public class ExpenseService {
         expense.setDescription(expenseForm.getDescription());
         expense.setValue(expenseForm.getValue());
         expense.setDate(expenseForm.getDate());
+        expense.setCategory(expenseForm.getCategory());
 
         return new ExpenseDto(expense);
     }

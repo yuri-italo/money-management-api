@@ -1,5 +1,6 @@
 package br.com.alura.moneymanagementapi.dto;
 
+import br.com.alura.moneymanagementapi.model.Category;
 import br.com.alura.moneymanagementapi.model.Expense;
 
 import java.math.BigDecimal;
@@ -12,11 +13,13 @@ public class ExpenseDto {
     private final String description;
     private final BigDecimal value;
     private final LocalDate date;
+    private final Category category;
 
     public ExpenseDto(Expense expense) {
         this.description = expense.getDescription();
         this.value = expense.getValue();
         this.date = expense.getDate();
+        this.category = expense.getCategory();
     }
 
     public static List<ExpenseDto> convertManyToDto(List<Expense> expenseList) {
@@ -33,5 +36,9 @@ public class ExpenseDto {
 
     public LocalDate getDate() {
         return date;
+    }
+
+    public Category getCategory() {
+        return category;
     }
 }

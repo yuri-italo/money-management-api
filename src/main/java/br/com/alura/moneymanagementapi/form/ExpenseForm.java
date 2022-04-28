@@ -1,5 +1,6 @@
 package br.com.alura.moneymanagementapi.form;
 
+import br.com.alura.moneymanagementapi.model.Category;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.validation.constraints.NotBlank;
@@ -15,6 +16,8 @@ public class ExpenseForm {
     @NotNull
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd-MM-yyyy")
     private LocalDate date;
+    @NotNull
+    private Category category;
 
     public String getDescription() {
         return description;
@@ -26,5 +29,9 @@ public class ExpenseForm {
 
     public LocalDate getDate() {
         return date;
+    }
+
+    public Category getCategory() {
+        return category;
     }
 }

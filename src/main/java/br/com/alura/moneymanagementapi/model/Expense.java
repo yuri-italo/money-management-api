@@ -16,6 +16,8 @@ public class Expense {
     private BigDecimal value;
     @Column(nullable = false)
     private LocalDate date;
+    @Column(nullable = false)
+    private Category category;
 
     public Long getId() {
         return id;
@@ -47,5 +49,13 @@ public class Expense {
 
     public void setDate(LocalDate date) {
         this.date = date;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 }
