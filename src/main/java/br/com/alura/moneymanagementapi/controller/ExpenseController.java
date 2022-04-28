@@ -32,4 +32,9 @@ public class ExpenseController {
     public ResponseEntity<?> getById(@PathVariable Long id) {
         return expenseService.getById(id);
     }
+    @PutMapping("/{id}")
+    @Transactional
+    public ResponseEntity<?> updateById(@PathVariable Long id, @RequestBody @Valid ExpenseForm expenseForm) {
+        return expenseService.updateById(id,expenseForm);
+    }
 }

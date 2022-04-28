@@ -54,4 +54,24 @@ public class ExpenseService {
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Expense does not exist.");
     }
+
+    public ResponseEntity<?> updateById(Long id, ExpenseForm expenseForm) {
+        Optional<Expense> optional = expenseRepository.findById(id);
+
+        if (expenseAlreadyExists(expenseForm))
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Monthly expense already exists.");
+
+        if (optional.isPresent())
+            return ResponseEntity.status(HttpStatus.OK).body(updateFields(optional.get(),expenseForm));
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Expense does not exist.");
+    }
+
+    private ExpenseDto updateFields(Expense expense, ExpenseForm expenseForm) {
+        expense.setDescription(expenseForm.getDescription());
+        expense.setValue(expenseForm.getValue());
+        expense.setDate(expenseForm.getDate());
+
+        return new ExpenseDto(expense);
+    }
 }

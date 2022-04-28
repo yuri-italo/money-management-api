@@ -62,12 +62,12 @@ public class IncomeService {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Monthly income already exists.");
 
         if (optional.isPresent())
-            return ResponseEntity.status(HttpStatus.OK).body(updateFields(incomeForm,optional.get()));
+            return ResponseEntity.status(HttpStatus.OK).body(updateFields(optional.get(),incomeForm));
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Income does not exist.");
     }
 
-    private IncomeDto updateFields(IncomeForm incomeForm, Income income) {
+    private IncomeDto updateFields(Income income,IncomeForm incomeForm) {
         income.setDescription(incomeForm.getDescription());
         income.setValue(incomeForm.getValue());
         income.setDate(incomeForm.getDate());
