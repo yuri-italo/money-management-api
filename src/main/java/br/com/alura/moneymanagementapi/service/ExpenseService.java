@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.List;
+
 @Service
 public class ExpenseService {
 
@@ -32,5 +34,14 @@ public class ExpenseService {
 
     private boolean expenseAlreadyExists(ExpenseForm expenseForm) {
         return expenseRepository.findByDescriptionAndDate(expenseForm.getDescription(),expenseForm.getDate().getYear(),expenseForm.getDate().getMonthValue());
+    }
+
+    public ResponseEntity<?> listAll() {
+        List<Expense> expenseList = expenseRepository.findAll();
+
+        if (expenseList.isEmpty())
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+
+        return ResponseEntity.status(HttpStatus.OK).body(ExpenseDto.convertManyToDto(expenseList));
     }
 }
