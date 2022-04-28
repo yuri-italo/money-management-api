@@ -28,6 +28,10 @@ public class IncomeController {
     public ResponseEntity<?> listAll(@RequestParam(required = false) String description) {
         return incomeService.listAll(description);
     }
+    @GetMapping("/{year}/{month}")
+    public ResponseEntity<?> getByMonth(@PathVariable int year, @PathVariable int month) {
+        return incomeService.getByMonth(year,month);
+    }
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable Long id) {
         return incomeService.getById(id);

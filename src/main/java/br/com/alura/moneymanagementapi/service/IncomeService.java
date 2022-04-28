@@ -60,6 +60,15 @@ public class IncomeService {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Income does not exist.");
     }
 
+    public ResponseEntity<?> getByMonth(int year, int month) {
+        List<Income> incomeList = incomeRespository.findByMonth(year, month);
+
+        if (incomeList.isEmpty())
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+
+        return ResponseEntity.status(HttpStatus.OK).body(incomeList);
+    }
+
     public ResponseEntity<?> updateById(Long id, IncomeForm incomeForm) {
         Optional<Income> optional = incomeRespository.findById(id);
 
