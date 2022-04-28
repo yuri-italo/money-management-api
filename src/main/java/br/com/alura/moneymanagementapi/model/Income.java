@@ -9,8 +9,11 @@ public class Income {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(nullable = false)
     private String description;
+    @Column(nullable = false)
     private BigDecimal value;
+    @Column(nullable = false)
     private LocalDate date;
 
     public Long getId() {
