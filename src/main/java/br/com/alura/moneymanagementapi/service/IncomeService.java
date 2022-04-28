@@ -58,13 +58,18 @@ public class IncomeService {
     public ResponseEntity<?> updateById(Long id, IncomeForm incomeForm) {
         Optional<Income> optional = incomeRespository.findById(id);
 
-        if (incomeAlreadyExists(incomeForm))
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Monthly income already exists.");
+        if (optional.isPresent()) {
+            if (incomeAlreadyExists(incomeForm) && valueIsEqual(optional.get(),incomeForm))
+                return ResponseEntity.status(HttpStatus.CONFLICT).body("Monthly income already exists.");
 
-        if (optional.isPresent())
             return ResponseEntity.status(HttpStatus.OK).body(updateFields(optional.get(),incomeForm));
+        }
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Income does not exist.");
+    }
+
+    private boolean valueIsEqual(Income income, IncomeForm incomeForm) {
+        return income.getValue().compareTo(incomeForm.getValue()) == 0;
     }
 
     private IncomeDto updateFields(Income income,IncomeForm incomeForm) {

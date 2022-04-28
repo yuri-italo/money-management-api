@@ -10,7 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -58,13 +60,18 @@ public class ExpenseService {
     public ResponseEntity<?> updateById(Long id, ExpenseForm expenseForm) {
         Optional<Expense> optional = expenseRepository.findById(id);
 
-        if (expenseAlreadyExists(expenseForm))
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Monthly expense already exists.");
+        if (optional.isPresent()) {
+            if (expenseAlreadyExists(expenseForm) && valueIsEqual(optional.get(),expenseForm))
+                return ResponseEntity.status(HttpStatus.CONFLICT).body("Monthly expense already exists.");
 
-        if (optional.isPresent())
             return ResponseEntity.status(HttpStatus.OK).body(updateFields(optional.get(),expenseForm));
+        }
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Expense does not exist.");
+    }
+
+    private boolean valueIsEqual(Expense expense, ExpenseForm expenseForm) {
+        return expense.getValue().compareTo(expenseForm.getValue()) == 0;
     }
 
     private ExpenseDto updateFields(Expense expense, ExpenseForm expenseForm) {
