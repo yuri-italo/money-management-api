@@ -74,4 +74,15 @@ public class ExpenseService {
 
         return new ExpenseDto(expense);
     }
+
+    public ResponseEntity<?> deleteById(Long id) {
+        Optional<Expense> optional = expenseRepository.findById(id);
+
+        if (optional.isPresent()) {
+            expenseRepository.deleteById(id);
+            return ResponseEntity.status(HttpStatus.OK).body("Expense deleted.");
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Expense does not exist.");
+    }
 }

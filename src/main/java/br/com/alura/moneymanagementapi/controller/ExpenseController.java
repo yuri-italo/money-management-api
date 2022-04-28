@@ -37,4 +37,9 @@ public class ExpenseController {
     public ResponseEntity<?> updateById(@PathVariable Long id, @RequestBody @Valid ExpenseForm expenseForm) {
         return expenseService.updateById(id,expenseForm);
     }
+    @DeleteMapping("/{id}")
+    @Transactional
+    public ResponseEntity<?> deleteById(@PathVariable Long id) {
+        return expenseService.deleteById(id);
+    }
 }
