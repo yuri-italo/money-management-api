@@ -58,6 +58,15 @@ public class ExpenseService {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Expense does not exist.");
     }
 
+    public ResponseEntity<?> getByMonth(int year, int month) {
+        List<Expense> expenseList = expenseRepository.findByMonth(year, month);
+
+        if (expenseList.isEmpty())
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+
+        return ResponseEntity.status(HttpStatus.OK).body(expenseList);
+    }
+
     public ResponseEntity<?> updateById(Long id, ExpenseForm expenseForm) {
         Optional<Expense> optional = expenseRepository.findById(id);
 

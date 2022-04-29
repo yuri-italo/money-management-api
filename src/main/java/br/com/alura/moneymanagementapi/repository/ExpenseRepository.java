@@ -16,4 +16,6 @@ public interface ExpenseRepository extends JpaRepository<Expense, Long> {
     boolean findByDescriptionAndDate(@Param("description") String description, @Param("year") int year, @Param("month") int month);
 
     List<Expense> findByDescriptionContainingIgnoreCase(@Param("description") String description);
+    @Query("SELECT e FROM Expense e WHERE YEAR(e.date) = :year AND MONTH(e.date) = :month")
+    List<Expense> findByMonth(@Param("year") int year, @Param("month") int month);
 }

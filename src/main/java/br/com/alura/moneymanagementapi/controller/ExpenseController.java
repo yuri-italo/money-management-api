@@ -32,6 +32,10 @@ public class ExpenseController {
     public ResponseEntity<?> getById(@PathVariable Long id) {
         return expenseService.getById(id);
     }
+    @GetMapping("/{year}/{month}")
+    public ResponseEntity<?> getByMonth(@PathVariable int year, @PathVariable int month) {
+        return expenseService.getByMonth(year,month);
+    }
     @PutMapping("/{id}")
     @Transactional
     public ResponseEntity<?> updateById(@PathVariable Long id, @RequestBody @Valid ExpenseForm expenseForm) {
