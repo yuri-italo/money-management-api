@@ -69,6 +69,10 @@ public class IncomeService {
         return ResponseEntity.status(HttpStatus.OK).body(incomeList);
     }
 
+    public List<Income> getIncomeListByMonth(int year, int month) {
+        return incomeRespository.findByMonth(year,month);
+    }
+
     public ResponseEntity<?> updateById(Long id, IncomeForm incomeForm) {
         Optional<Income> optional = incomeRespository.findById(id);
 

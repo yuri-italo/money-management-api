@@ -1,11 +1,13 @@
 package br.com.alura.moneymanagementapi.repository;
 
+import br.com.alura.moneymanagementapi.model.Category;
 import br.com.alura.moneymanagementapi.model.Expense;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Repository
@@ -18,4 +20,6 @@ public interface ExpenseRepository extends JpaRepository<Expense, Long> {
     List<Expense> findByDescriptionContainingIgnoreCase(@Param("description") String description);
     @Query("SELECT e FROM Expense e WHERE YEAR(e.date) = :year AND MONTH(e.date) = :month")
     List<Expense> findByMonth(@Param("year") int year, @Param("month") int month);
+    @Query("SELECT SUM(e.value) FROM Expense e WHERE e.category = :category")
+    BigDecimal getTotalExpenseByCategory(@Param("category") Category category);
 }

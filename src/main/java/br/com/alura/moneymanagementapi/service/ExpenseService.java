@@ -1,7 +1,9 @@
 package br.com.alura.moneymanagementapi.service;
 
 import br.com.alura.moneymanagementapi.dto.ExpenseDto;
+import br.com.alura.moneymanagementapi.dto.MonthlyExpenseByCategoryDto;
 import br.com.alura.moneymanagementapi.form.ExpenseForm;
+import br.com.alura.moneymanagementapi.model.Category;
 import br.com.alura.moneymanagementapi.model.Expense;
 import br.com.alura.moneymanagementapi.repository.ExpenseRepository;
 import org.springframework.http.HttpStatus;
@@ -9,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -67,6 +70,10 @@ public class ExpenseService {
         return ResponseEntity.status(HttpStatus.OK).body(expenseList);
     }
 
+    public List<Expense> getExpenseListByMonth(int year, int month) {
+        return expenseRepository.findByMonth(year,month);
+    }
+
     public ResponseEntity<?> updateById(Long id, ExpenseForm expenseForm) {
         Optional<Expense> optional = expenseRepository.findById(id);
 
@@ -105,4 +112,12 @@ public class ExpenseService {
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Expense does not exist.");
     }
+
+    public MonthlyExpenseByCategoryDto getExpenseByCategory(Category category) {
+        BigDecimal total = expenseRepository.getTotalExpenseByCategory(category);
+
+        return new MonthlyExpenseByCategoryDto(category,total);
+    }
 }
+
+

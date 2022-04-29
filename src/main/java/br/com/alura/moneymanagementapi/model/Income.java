@@ -3,6 +3,7 @@ package br.com.alura.moneymanagementapi.model;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+
 @Entity
 @Table(name = "incomes")
 public class Income {
