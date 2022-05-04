@@ -67,11 +67,7 @@ public class ExpenseService {
         if (expenseList.isEmpty())
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
-        return ResponseEntity.status(HttpStatus.OK).body(expenseList);
-    }
-
-    public List<Expense> getExpenseListByMonth(int year, int month) {
-        return expenseRepository.findByMonth(year,month);
+        return ResponseEntity.status(HttpStatus.OK).body(ExpenseDto.convertManyToDto(expenseList));
     }
 
     public ResponseEntity<?> updateById(Long id, ExpenseForm expenseForm) {
@@ -117,6 +113,10 @@ public class ExpenseService {
         BigDecimal total = expenseRepository.getTotalExpenseByCategory(category);
 
         return new MonthlyExpenseByCategoryDto(category,total);
+    }
+
+    public List<Expense> getExpenseListByMonth(int year, int month) {
+        return expenseRepository.findByMonth(year,month);
     }
 }
 
