@@ -7,16 +7,16 @@ import org.springframework.http.HttpStatus;
 
 import static io.restassured.RestAssured.*;
 
-class IncomeControllerTest {
+class ExpenseControllerTest {
     @BeforeEach
     void setUp() {
         baseURI = "http://localhost";
         port = 8080;
-        basePath = "/incomes";
+        basePath = "/expenses";
     }
 
     @Test
-    void returnNoContent_WhenIncomeListIsEmpty() throws Exception {
+    void returnNoContent_WhenExpenseListIsEmpty() throws Exception {
 
         given()
                 .contentType(ContentType.JSON)
@@ -28,11 +28,11 @@ class IncomeControllerTest {
     }
 
     @Test
-    void returnCreated_WhenSaveAValidIncome() {
+    void returnCreated_WhenSaveAValidExpense() {
 
         given()
                 .body("{\n" +
-                        "    \"description\":\"Salary\",\n" +
+                        "    \"description\":\"College\",\n" +
                         "    \"value\":\"10000\",\n" +
                         "    \"date\":\"01-06-2022\"\n" +
                         "}")
@@ -45,11 +45,11 @@ class IncomeControllerTest {
     }
 
     @Test
-    void returnConflict_WhenIncomeAlreadyExists() {
+    void returnConflict_WhenExpenseAlreadyExists() {
 
         given()
                 .body("{\n" +
-                        "    \"description\":\"Salary\",\n" +
+                        "    \"description\":\"College\",\n" +
                         "    \"value\":\"10000\",\n" +
                         "    \"date\":\"01-06-2022\"\n" +
                         "}")
@@ -62,7 +62,7 @@ class IncomeControllerTest {
     }
 
     @Test
-    void returnOK_WhenAtLeastOneIncomeIsPresent() {
+    void returnOK_WhenAtLeastOneExpenseIsPresent() {
 
         given()
                 .contentType(ContentType.JSON)
@@ -74,7 +74,7 @@ class IncomeControllerTest {
     }
 
     @Test
-    void returnOK_WhenAtLeastOneIncomeByMonthIsPresent() {
+    void returnOK_WhenAtLeastOneExpenseByMonthIsPresent() {
 
         given()
                 .contentType(ContentType.JSON)
@@ -86,7 +86,7 @@ class IncomeControllerTest {
     }
 
     @Test
-    void returnNoContent_WhenIncomeListByMonthIsEmpty() throws Exception {
+    void returnNoContent_WhenExpenseListByMonthIsEmpty() throws Exception {
 
         given()
                 .contentType(ContentType.JSON)
@@ -98,7 +98,7 @@ class IncomeControllerTest {
     }
 
     @Test
-    void returnOK_WhenIncomeByIdIsPresent() {
+    void returnOK_WhenExpenseByIdIsPresent() {
 
         given()
                 .contentType(ContentType.JSON)
@@ -110,7 +110,7 @@ class IncomeControllerTest {
     }
 
     @Test
-    void returnNotFound_WhenIncomeByIdIsNotPresent() {
+    void returnNotFound_WhenExpenseByIdIsNotPresent() {
 
         given()
                 .contentType(ContentType.JSON)
@@ -122,11 +122,11 @@ class IncomeControllerTest {
     }
 
     @Test
-    void returnOK_WhenUpdateIncomeByIdIsAllRight() {
+    void returnOK_WhenUpdateExpenseByIdIsAllRight() {
 
         given()
                 .body("{\n" +
-                        "    \"description\":\"Salary\",\n" +
+                        "    \"description\":\"College\",\n" +
                         "    \"value\":\"10000\",\n" +
                         "    \"date\":\"01-07-2022\"\n" +
                         "}")
@@ -139,11 +139,11 @@ class IncomeControllerTest {
     }
 
     @Test
-    void returnNotFound_WhenUpdateIncomeByIdIsNotPresent() {
+    void returnNotFound_WhenUpdateExpenseByIdIsNotPresent() {
 
         given()
                 .body("{\n" +
-                        "    \"description\":\"Salary\",\n" +
+                        "    \"description\":\"College\",\n" +
                         "    \"value\":\"10000\",\n" +
                         "    \"date\":\"01-07-2022\"\n" +
                         "}")
@@ -156,11 +156,11 @@ class IncomeControllerTest {
     }
 
     @Test
-    void returnConflict_WhenUpdateIncomeByIdAlreadyExists() {
+    void returnConflict_WhenUpdateExpenseByIdAlreadyExists() {
 
         given()
                 .body("{\n" +
-                        "    \"description\":\"Salary\",\n" +
+                        "    \"description\":\"College\",\n" +
                         "    \"value\":\"10000\",\n" +
                         "    \"date\":\"01-07-2022\"\n" +
                         "}")
@@ -173,7 +173,7 @@ class IncomeControllerTest {
     }
 
     @Test
-    void returnOK_WhenDeleteIncomeByIdIsPresent() {
+    void returnOK_WhenDeleteExpenseByIdIsPresent() {
 
         given()
                 .contentType(ContentType.JSON)
@@ -185,7 +185,7 @@ class IncomeControllerTest {
     }
 
     @Test
-    void returnNotFound_WhenDeleteIncomeByIdIsNotPresent() {
+    void returnNotFound_WhenDeleteExpenseByIdIsNotPresent() {
 
         given()
                 .contentType(ContentType.JSON)
