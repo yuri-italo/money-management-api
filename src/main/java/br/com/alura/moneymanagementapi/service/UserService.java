@@ -60,4 +60,28 @@ public class UserService {
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User does not exist.");
     }
+
+    public ResponseEntity<?> updateById(Long id,UserForm userForm) {
+        Optional<User> optional = userRepository.findById(id);
+
+        if (optional.isPresent()) {
+            if (emailAlreadyExists(userForm.getEmail()))
+                return ResponseEntity.status(HttpStatus.CONFLICT).body("Email already exists.");
+
+            return ResponseEntity.status(HttpStatus.OK).body(updateFields(optional.get(),userForm));
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User does not exist.");
+    }
+
+    private UserDto updateFields(User user, UserForm userForm) {
+        user.setEmail(userForm.getEmail());
+        user.setPassword(new BCryptPasswordEncoder().encode(userForm.getPassword()));
+
+        return new UserDto(user);
+    }
+
+    private boolean emailAlreadyExists(String email) {
+        return userRepository.emailAlreadyExists(email);
+    }
 }

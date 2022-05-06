@@ -34,11 +34,11 @@ public class UserController {
     public ResponseEntity<?> getById(@PathVariable Long id) {
         return userService.getById(id);
     }
-//    @PutMapping("/{id}")
-//    @Transactional
-//    public ResponseEntity<?> updateById(@PathVariable Long id, @RequestBody @Valid ExpenseForm expenseForm) {
-//        return userService.updateById(id,expenseForm);
-//    }
+    @PutMapping("/{id}")
+    @Transactional
+    public ResponseEntity<?> updateById(@PathVariable Long id, @RequestBody @Valid UserForm userForm) {
+        return userService.updateById(id,userForm);
+    }
 //    @DeleteMapping("/{id}")
 //    @Transactional
 //    public ResponseEntity<?> deleteById(@PathVariable Long id) {
