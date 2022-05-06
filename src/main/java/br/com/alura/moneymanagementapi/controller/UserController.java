@@ -26,10 +26,10 @@ public class UserController {
     public ResponseEntity<?> save(@RequestBody @Valid UserForm userForm, UriComponentsBuilder uriBuilder) {
         return userService.save(userForm,uriBuilder);
     }
-//    @GetMapping
-//    public ResponseEntity<?> listAll(@RequestParam(required = false) String description) {
-//      return userService.listAll(description);
-//    }
+    @GetMapping
+    public ResponseEntity<?> listAll(@RequestParam(required = false) String email) {
+      return userService.listAll(email);
+    }
 //    @GetMapping("/{id}")
 //    public ResponseEntity<?> getById(@PathVariable Long id) {
 //        return userService.getById(id);

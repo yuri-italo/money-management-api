@@ -11,6 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -35,5 +36,19 @@ public class UserService {
         userRepository.save(user);
 
         return ResponseEntity.created(uriBuilder.path("/users/{id}").buildAndExpand(user.getId()).toUri()).body(new UserDto(user));
+    }
+
+    public ResponseEntity<?> listAll(String email) {
+        List<User> userList;
+
+        if (email == null)
+            userList = userRepository.findAll();
+        else
+            userList = userRepository.findByEmailContainingIgnoreCase(email);
+
+        if (userList.isEmpty())
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+
+        return ResponseEntity.status(HttpStatus.OK).body(UserDto.convertManyToDto(userList));
     }
 }
