@@ -51,4 +51,13 @@ public class UserService {
 
         return ResponseEntity.status(HttpStatus.OK).body(UserDto.convertManyToDto(userList));
     }
+
+    public ResponseEntity<?> getById(Long id) {
+        Optional<User> optional = userRepository.findById(id);
+
+        if (optional.isPresent())
+            return ResponseEntity.status(HttpStatus.OK).body(new UserDto(optional.get()));
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User does not exist.");
+    }
 }

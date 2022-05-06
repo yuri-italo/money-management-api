@@ -30,10 +30,10 @@ public class UserController {
     public ResponseEntity<?> listAll(@RequestParam(required = false) String email) {
       return userService.listAll(email);
     }
-//    @GetMapping("/{id}")
-//    public ResponseEntity<?> getById(@PathVariable Long id) {
-//        return userService.getById(id);
-//    }
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getById(@PathVariable Long id) {
+        return userService.getById(id);
+    }
 //    @PutMapping("/{id}")
 //    @Transactional
 //    public ResponseEntity<?> updateById(@PathVariable Long id, @RequestBody @Valid ExpenseForm expenseForm) {
