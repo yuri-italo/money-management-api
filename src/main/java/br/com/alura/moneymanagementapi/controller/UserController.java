@@ -1,8 +1,6 @@
 package br.com.alura.moneymanagementapi.controller;
 
-import br.com.alura.moneymanagementapi.form.ExpenseForm;
 import br.com.alura.moneymanagementapi.form.UserForm;
-import br.com.alura.moneymanagementapi.service.ExpenseService;
 import br.com.alura.moneymanagementapi.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;

@@ -1,5 +1,7 @@
 package br.com.alura.moneymanagementapi.form;
 
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -28,5 +30,9 @@ public class UserForm {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public UsernamePasswordAuthenticationToken convert() {
+        return new UsernamePasswordAuthenticationToken(this.email,this.password);
     }
 }
