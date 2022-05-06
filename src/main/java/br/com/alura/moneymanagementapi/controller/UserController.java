@@ -39,9 +39,9 @@ public class UserController {
     public ResponseEntity<?> updateById(@PathVariable Long id, @RequestBody @Valid UserForm userForm) {
         return userService.updateById(id,userForm);
     }
-//    @DeleteMapping("/{id}")
-//    @Transactional
-//    public ResponseEntity<?> deleteById(@PathVariable Long id) {
-//        return userService.deleteById(id);
-//    }
+    @DeleteMapping("/{id}")
+    @Transactional
+    public ResponseEntity<?> deleteById(@PathVariable Long id) {
+        return userService.deleteById(id);
+    }
 }

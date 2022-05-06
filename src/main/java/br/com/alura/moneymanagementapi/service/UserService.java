@@ -84,4 +84,15 @@ public class UserService {
     private boolean emailAlreadyExists(String email) {
         return userRepository.emailAlreadyExists(email);
     }
+
+    public ResponseEntity<?> deleteById(Long id) {
+        Optional<User> optional = userRepository.findById(id);
+
+        if (optional.isPresent()) {
+            userRepository.deleteById(id);
+            return ResponseEntity.status(HttpStatus.OK).body("User deleted.");
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User does not exist.");
+    }
 }
