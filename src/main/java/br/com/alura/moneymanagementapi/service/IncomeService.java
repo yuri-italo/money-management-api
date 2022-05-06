@@ -1,6 +1,7 @@
 package br.com.alura.moneymanagementapi.service;
 
 import br.com.alura.moneymanagementapi.dto.IncomeDto;
+import br.com.alura.moneymanagementapi.dto.IncomeWithoutIdDto;
 import br.com.alura.moneymanagementapi.form.IncomeForm;
 import br.com.alura.moneymanagementapi.model.Income;
 import br.com.alura.moneymanagementapi.repository.IncomeRespository;
@@ -55,7 +56,7 @@ public class IncomeService {
         Optional<Income> optional = incomeRespository.findById(id);
 
         if (optional.isPresent())
-            return ResponseEntity.status(HttpStatus.OK).body(new IncomeDto(optional.get()));
+            return ResponseEntity.status(HttpStatus.OK).body(new IncomeWithoutIdDto(optional.get()));
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Income does not exist.");
     }
@@ -66,7 +67,7 @@ public class IncomeService {
         if (incomeList.isEmpty())
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
-        return ResponseEntity.status(HttpStatus.OK).body(IncomeDto.convertManyToDto(incomeList));
+        return ResponseEntity.status(HttpStatus.OK).body(IncomeWithoutIdDto.convertManyToDto(incomeList));
     }
 
     public ResponseEntity<?> updateById(Long id, IncomeForm incomeForm) {
@@ -86,12 +87,12 @@ public class IncomeService {
         return income.getValue().compareTo(incomeForm.getValue()) == 0;
     }
 
-    private IncomeDto updateFields(Income income,IncomeForm incomeForm) {
+    private IncomeWithoutIdDto updateFields(Income income,IncomeForm incomeForm) {
         income.setDescription(incomeForm.getDescription());
         income.setValue(incomeForm.getValue());
         income.setDate(incomeForm.getDate());
 
-        return new IncomeDto(income);
+        return new IncomeWithoutIdDto(income);
     }
 
     public ResponseEntity<String> deleteById(Long id) {

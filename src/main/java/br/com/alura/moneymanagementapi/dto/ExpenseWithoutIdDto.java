@@ -8,27 +8,22 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ExpenseDto {
-    private final Long id;
+public class ExpenseWithoutIdDto {
+
     private final String description;
     private final BigDecimal value;
     private final LocalDate date;
     private final Category category;
 
-    public ExpenseDto(Expense expense) {
-        this.id = expense.getId();
+    public ExpenseWithoutIdDto(Expense expense) {
         this.description = expense.getDescription();
         this.value = expense.getValue();
         this.date = expense.getDate();
         this.category = expense.getCategory();
     }
 
-    public static List<ExpenseDto> convertManyToDto(List<Expense> expenseList) {
-        return expenseList.stream().map(ExpenseDto::new).collect(Collectors.toList());
-    }
-
-    public Long getId() {
-        return id;
+    public static List<ExpenseWithoutIdDto> convertManyToDto(List<Expense> expenseList) {
+        return expenseList.stream().map(ExpenseWithoutIdDto::new).collect(Collectors.toList());
     }
 
     public String getDescription() {

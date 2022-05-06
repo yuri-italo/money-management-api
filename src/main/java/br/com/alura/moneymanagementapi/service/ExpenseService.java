@@ -1,6 +1,7 @@
 package br.com.alura.moneymanagementapi.service;
 
 import br.com.alura.moneymanagementapi.dto.ExpenseDto;
+import br.com.alura.moneymanagementapi.dto.ExpenseWithoutIdDto;
 import br.com.alura.moneymanagementapi.dto.MonthlyExpenseByCategoryDto;
 import br.com.alura.moneymanagementapi.form.ExpenseForm;
 import br.com.alura.moneymanagementapi.model.Category;
@@ -56,7 +57,7 @@ public class ExpenseService {
         Optional<Expense> optional = expenseRepository.findById(id);
 
         if (optional.isPresent())
-            return ResponseEntity.status(HttpStatus.OK).body(new ExpenseDto(optional.get()));
+            return ResponseEntity.status(HttpStatus.OK).body(new ExpenseWithoutIdDto(optional.get()));
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Expense does not exist.");
     }
@@ -67,7 +68,7 @@ public class ExpenseService {
         if (expenseList.isEmpty())
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
-        return ResponseEntity.status(HttpStatus.OK).body(ExpenseDto.convertManyToDto(expenseList));
+        return ResponseEntity.status(HttpStatus.OK).body(ExpenseWithoutIdDto.convertManyToDto(expenseList));
     }
 
     public ResponseEntity<?> updateById(Long id, ExpenseForm expenseForm) {
@@ -87,7 +88,7 @@ public class ExpenseService {
         return expense.getValue().compareTo(expenseForm.getValue()) == 0 && expenseForm.getCategory() == null;
     }
 
-    private ExpenseDto updateFields(Expense expense, ExpenseForm expenseForm) {
+    private ExpenseWithoutIdDto updateFields(Expense expense, ExpenseForm expenseForm) {
         expense.setDescription(expenseForm.getDescription());
         expense.setValue(expenseForm.getValue());
         expense.setDate(expenseForm.getDate());
@@ -95,7 +96,7 @@ public class ExpenseService {
         if (expenseForm.getCategory() != null)
             expense.setCategory(expenseForm.getCategory());
 
-        return new ExpenseDto(expense);
+        return new ExpenseWithoutIdDto(expense);
     }
 
     public ResponseEntity<?> deleteById(Long id) {
