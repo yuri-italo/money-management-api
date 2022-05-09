@@ -1,6 +1,6 @@
 # money-management-api
 
-API desenvolvida durante a Edição #2: Desafios Back-End da [Alura Challenges.](https://www.alura.com.br/challenges/back-end/)
+API desenvolvida durante a Edição #2: Desafios Back-End da [Alura Challenges.](https://www.alura.com.br/challenges/back-end-2/)
 
 Após alguns testes com protótipos feitos pelo time de UX de uma empresa, foi requisitada a primeira versão de uma aplicação para controle de orçamento familiar.** A aplicação deve permitir que uma pessoa cadastre suas receitas e despesas do mês, bem como gerar um relatório mensal.
 
