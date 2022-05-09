@@ -3,6 +3,8 @@ package br.com.alura.moneymanagementapi.controller;
 import br.com.alura.moneymanagementapi.config.security.service.TokenService;
 import br.com.alura.moneymanagementapi.dto.TokenDto;
 import br.com.alura.moneymanagementapi.form.UserForm;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,6 +20,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/auth")
+@Tag(name = "Authentication")
 public class AuthenticationController {
     private final AuthenticationManager authenticationManager;
     private final TokenService tokenService;
@@ -28,6 +31,7 @@ public class AuthenticationController {
     }
 
     @PostMapping
+    @Operation(summary = "Return a token for authentication.")
     public ResponseEntity<?> authenticate(@RequestBody @Valid UserForm userForm) {
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = userForm.convert();
 
