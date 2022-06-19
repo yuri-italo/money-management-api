@@ -1,15 +1,11 @@
 package br.com.alura.moneymanagementapi.service;
 
-import br.com.alura.moneymanagementapi.dto.UserDto;
 import br.com.alura.moneymanagementapi.form.UserForm;
 import br.com.alura.moneymanagementapi.model.User;
 import br.com.alura.moneymanagementapi.repository.UserRepository;
 import org.springframework.beans.BeanUtils;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,23 +18,20 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public ResponseEntity<?> save(UserForm userForm, UriComponentsBuilder uriBuilder) {
-        Optional<User> optional = userRepository.findByEmail(userForm.getEmail());
-
-        if (optional.isPresent())
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Email already exists.");
-
+    public User save(UserForm userForm) {
         userForm.setPassword(new BCryptPasswordEncoder().encode(userForm.getPassword()));
 
         User user = new User();
         BeanUtils.copyProperties(userForm,user);
 
-        userRepository.save(user);
-
-        return ResponseEntity.created(uriBuilder.path("/users/{id}").buildAndExpand(user.getId()).toUri()).body(new UserDto(user));
+        return userRepository.save(user);
     }
 
-    public ResponseEntity<?> listAll(String email) {
+    public Optional<User> findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+    public List<User> listAll(String email) {
         List<User> userList;
 
         if (email == null)
@@ -46,53 +39,29 @@ public class UserService {
         else
             userList = userRepository.findByEmailContainingIgnoreCase(email);
 
-        if (userList.isEmpty())
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-
-        return ResponseEntity.status(HttpStatus.OK).body(UserDto.convertManyToDto(userList));
+        return userList;
     }
 
-    public ResponseEntity<?> getById(Long id) {
-        Optional<User> optional = userRepository.findById(id);
-
-        if (optional.isPresent())
-            return ResponseEntity.status(HttpStatus.OK).body(new UserDto(optional.get()));
-
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User does not exist.");
+    public Optional<User> findById(Long id) {
+        return userRepository.findById(id);
     }
 
-    public ResponseEntity<?> updateById(Long id,UserForm userForm) {
-        Optional<User> optional = userRepository.findById(id);
-
-        if (optional.isPresent()) {
-            if (emailAlreadyExists(userForm.getEmail()))
-                return ResponseEntity.status(HttpStatus.CONFLICT).body("Email already exists.");
-
-            return ResponseEntity.status(HttpStatus.OK).body(updateFields(optional.get(),userForm));
-        }
-
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User does not exist.");
+    public User update(Long id, UserForm userForm) {
+        return updateFields(userRepository.getById(id),userForm);
     }
 
-    private UserDto updateFields(User user, UserForm userForm) {
+    private User updateFields(User user, UserForm userForm) {
         user.setEmail(userForm.getEmail());
         user.setPassword(new BCryptPasswordEncoder().encode(userForm.getPassword()));
 
-        return new UserDto(user);
+        return user;
     }
 
-    private boolean emailAlreadyExists(String email) {
+    public boolean emailAlreadyExists(String email) {
         return userRepository.emailAlreadyExists(email);
     }
 
-    public ResponseEntity<?> deleteById(Long id) {
-        Optional<User> optional = userRepository.findById(id);
-
-        if (optional.isPresent()) {
-            userRepository.deleteById(id);
-            return ResponseEntity.status(HttpStatus.OK).body("User deleted.");
-        }
-
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User does not exist.");
+    public void delete(User user) {
+        userRepository.delete(user);
     }
 }
