@@ -26,13 +26,11 @@ public class MonthSummaryService {
         this.expenseService = expenseService;
     }
 
-    public ResponseEntity<?>  get(int year, int month) {
+    public MonthSummaryDto get(int year, int month) {
         List<Income> incomeList = incomeService.getIncomeListByMonth(year, month);
         List<Expense> expenseList = expenseService.getExpenseListByMonth(year, month);
 
-        MonthSummaryDto summary = getSummary(incomeList, expenseList);
-
-        return ResponseEntity.status(HttpStatus.OK).body(summary);
+        return getSummary(incomeList, expenseList);
     }
 
     private MonthSummaryDto getSummary(List<Income> incomeList, List<Expense> expenseList) {

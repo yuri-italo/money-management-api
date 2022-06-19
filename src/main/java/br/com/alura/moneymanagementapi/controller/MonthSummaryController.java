@@ -1,9 +1,11 @@
 package br.com.alura.moneymanagementapi.controller;
 
+import br.com.alura.moneymanagementapi.dto.MonthSummaryDto;
 import br.com.alura.moneymanagementapi.service.MonthSummaryService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,6 +26,8 @@ public class MonthSummaryController {
     @Operation(summary = "Get the month summary.")
     @SecurityRequirement(name = "bearerAuth")
     public ResponseEntity<?> get(@PathVariable int year, @PathVariable int month) {
-        return monthSummaryService.get(year,month);
+        MonthSummaryDto monthSummaryDto = monthSummaryService.get(year, month);
+
+        return ResponseEntity.status(HttpStatus.OK).body(monthSummaryDto);
     }
 }
