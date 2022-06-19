@@ -26,7 +26,7 @@ public class MonthSummaryService {
         this.expenseService = expenseService;
     }
 
-    public ResponseEntity<?> get(int year, int month) {
+    public ResponseEntity<?>  get(int year, int month) {
         List<Income> incomeList = incomeService.getIncomeListByMonth(year, month);
         List<Expense> expenseList = expenseService.getExpenseListByMonth(year, month);
 

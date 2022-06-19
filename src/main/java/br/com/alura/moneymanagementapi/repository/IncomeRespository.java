@@ -17,5 +17,5 @@ public interface IncomeRespository extends JpaRepository<Income, Long> {
 
     List<Income> findByDescriptionContainingIgnoreCase(@Param("description") String description);
     @Query("SELECT i FROM Income i WHERE YEAR(i.date) = :year AND MONTH(i.date) = :month")
-    List<Income> findByMonth(@Param("year") int year, @Param("month") int month);
+    List<Income> getByMonth(@Param("year") int year, @Param("month") int month);
 }
