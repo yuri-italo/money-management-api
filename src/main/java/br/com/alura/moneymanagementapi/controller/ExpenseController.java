@@ -16,6 +16,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -80,7 +81,7 @@ public class ExpenseController {
 
     @PutMapping("/{id}")
     @Transactional
-    @Operation(summary = "Update one or more expense fields by id.")
+    @Operation(summary = "Update an expense.")
     @SecurityRequirement(name = "bearerAuth")
     public ResponseEntity<?> updateById(@PathVariable Long id, @RequestBody @Valid ExpenseForm expenseForm) {
         Optional<Expense> optional = expenseService.findById(id);
@@ -95,6 +96,21 @@ public class ExpenseController {
         }
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Expense does not exist.");
+    }
+
+    @PatchMapping("/{id}")
+    @Transactional
+    @Operation(summary = "Update one or more fields.")
+    @SecurityRequirement(name = "bearerAuth")
+    public ResponseEntity<?> patch(@PathVariable Long id, @RequestBody Map<String, Object> expenseFields) {
+        Optional<Expense> optional = expenseService.findById(id);
+
+        if (optional.isEmpty())
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Expense does not exist.");
+
+        Expense updatedExpense = expenseService.patch(expenseFields,optional.get());
+
+        return ResponseEntity.status(HttpStatus.OK).body(new ExpenseWithoutIdDto(updatedExpense));
     }
 
     @DeleteMapping("/{id}")

@@ -5,10 +5,14 @@ import br.com.alura.moneymanagementapi.form.ExpenseForm;
 import br.com.alura.moneymanagementapi.model.Category;
 import br.com.alura.moneymanagementapi.model.Expense;
 import br.com.alura.moneymanagementapi.repository.ExpenseRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ReflectionUtils;
 
+import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -78,6 +82,22 @@ public class ExpenseService {
 
     public List<Expense> getExpenseListByMonth(int year, int month) {
         return expenseRepository.findByMonth(year,month);
+    }
+
+    public Expense patch(Map<String, Object> expenseFields, Expense expense) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        Expense expenseData = objectMapper.convertValue(expenseFields, Expense.class);
+
+        expenseFields.forEach((attribute,value) -> {
+            Field field = ReflectionUtils.findField(Expense.class, attribute);
+            field.setAccessible(true);
+
+            Object newValue = ReflectionUtils.getField(field, expenseData);
+
+            ReflectionUtils.setField(field,expense,newValue);
+        });
+
+        return expense;
     }
 }
 
