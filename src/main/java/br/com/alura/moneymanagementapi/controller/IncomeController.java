@@ -16,6 +16,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -80,7 +81,7 @@ public class IncomeController {
 
     @PutMapping("/{id}")
     @Transactional
-    @Operation(summary = "Update one or more income fields.")
+    @Operation(summary = "Update an income.")
     @SecurityRequirement(name = "bearerAuth")
     public ResponseEntity<?> updateById(@PathVariable Long id, @RequestBody @Valid IncomeForm incomeForm) {
         Optional<Income> optional = incomeService.findById(id);
@@ -95,6 +96,21 @@ public class IncomeController {
         }
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Income does not exist.");
+    }
+
+    @PatchMapping("/{id}")
+    @Transactional
+    @Operation(summary = "Update one or more fields.")
+    @SecurityRequirement(name = "bearerAuth")
+    public ResponseEntity<?> patch(@PathVariable Long id, @RequestBody Map<String,Object> incomeFields) {
+        Optional<Income> optional = incomeService.findById(id);
+
+        if (optional.isEmpty())
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Income does not exist.");
+
+        Income updatedIncome = incomeService.patch(incomeFields,optional.get());
+
+        return ResponseEntity.status(HttpStatus.OK).body(new IncomeWithoutIdDto(updatedIncome));
     }
 
     @DeleteMapping("/{id}")

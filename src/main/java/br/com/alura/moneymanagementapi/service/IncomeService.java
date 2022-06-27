@@ -3,10 +3,14 @@ package br.com.alura.moneymanagementapi.service;
 import br.com.alura.moneymanagementapi.form.IncomeForm;
 import br.com.alura.moneymanagementapi.model.Income;
 import br.com.alura.moneymanagementapi.repository.IncomeRespository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ReflectionUtils;
 
+import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -71,5 +75,21 @@ public class IncomeService {
 
     public List<Income> getIncomeListByMonth(int year, int month) {
         return incomeRespository.getByMonth(year,month);
+    }
+
+    public Income patch(Map<String, Object> incomeFields, Income income) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        Income incomeData = objectMapper.convertValue(incomeFields, Income.class);
+
+        incomeFields.forEach((attribute,value) -> {
+            Field field = ReflectionUtils.findField(Income.class, attribute);
+            field.setAccessible(true);
+
+            Object newValue = ReflectionUtils.getField(field, incomeData);
+
+            ReflectionUtils.setField(field,income,newValue);
+        });
+
+        return income;
     }
 }
